@@ -17,7 +17,7 @@ typedef struct contract {
 
 typedef struct machine {
 	uint32_t PC;
-	uint32_t SP;
+	int SP;
 	uint32_t REG[32];
 	uint32_t MEM[MEMORY_SPACE];
 	uint32_t STACK[STACK_SPACE];
@@ -46,7 +46,7 @@ Machine *init_machine(char *c0_name, char *c1_name) {
 	ret->c1 = (Contract *) malloc(sizeof(Contract));
 	(ret->c1)->name = c1_name;
 	ret->PC = 0;
-	ret->SP = 0;
+	ret->SP = -1;
 	return ret;
 }
 
@@ -60,8 +60,7 @@ void shutdown_machine(Machine *dest) {
 void stack_push(Machine *dest, uint32_t item) {
 	if (dest->SP >= STACK_SPACE)
 		stack_overflow_err();
-	if (dest->SP != 0)
-		dest->SP++;
+	dest->SP++;
        	dest->STACK[dest->SP] = item;
 }
 
@@ -73,9 +72,17 @@ uint32_t stack_pop(Machine *dest) {
 }
 
 void stack_duplicate(Machine *dest) {
-	if (dest->SP == 0)
+	if (dest->SP == -1)
                 empty_stack_err("stack_duplicate");
 	stack_push(dest, *(dest->STACK));
+}
+
+void stack_print(Machine *dest) {
+	int i;
+	printf("[top]\n");
+	for (i = dest->SP; i >= 0; i--) {
+		printf("%u\n", dest->STACK[i]);
+	}
 }
 
 // Errors

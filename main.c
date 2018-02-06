@@ -1,4 +1,3 @@
-#include "evm.h"
 #include "opcodes.h"
 
 #define BUF_SIZE 1000
@@ -17,20 +16,16 @@ int main(void) {
 	
 	Machine *MAIN_VM = init_machine("test0", "test1");	
 	
-	printf("%lu\n", hash("PUSH"));
-	printf("%lu\n", hash("PRINT"));
-
 	while (1) {
-		printf(">>> ");
+		printf("> ");
 		BUFFER = read_line();
 		TOKS = split_line(BUFFER);
 		if (TOKS[0] == NULL)	
 			continue;
-		if (strncmp(TOKS[0], "EXIT", 4) == 0)
+		if (strncmp(TOKS[0], "STOP", 4) == 0)
 			break;
-		decode_instruction(TOKS);
+		decode_instruction(MAIN_VM, TOKS);
 	}
-
 	shutdown_machine(MAIN_VM);
 	printf("Machine shutdown successful\n");	
 }

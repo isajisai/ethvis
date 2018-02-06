@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #define MEMORY_SPACE (10*1024*1024)
 #define STACK_SPACE (1024*1024)

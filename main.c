@@ -17,7 +17,7 @@ int main(void) {
 	Machine *MAIN_VM = init_machine("test0", "test1");	
 	
 	while (1) {
-		printf("> ");
+		printf(">>>>> ");
 		BUFFER = read_line();
 		TOKS = split_line(BUFFER);
 		if (TOKS[0] == NULL)	

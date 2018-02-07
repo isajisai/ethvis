@@ -16,10 +16,10 @@ Ethvis: a quick n' dirty EVM Simulator
 --------------------------------------
 The goal of Ethvis is to create a light but powerful simulator to easily toy with the EVM. It does this through implementing 
 an interpreter for OPCODE values and their functionality. Some differences between the Ethvis interpreter and EVM specifics:
-    * Ethvis casts everything onto 32-bit unsigned int's -- DIRTY (for now)
-    * Ethvis cannot handle CALL -- DIRTY (for now)
-    * Ethvis has limited contract functionality -- DIRTY (for now)
-    * Ethvis is written in ANSI C (2008) -- QUICK
+* Ethvis casts everything onto 32-bit unsigned int's -- DIRTY (for now)
+* Ethvis cannot handle CALL -- DIRTY (for now)
+* Ethvis has limited contract functionality -- DIRTY (for now)
+* Ethvis is written in ANSI C (2008) -- QUICK
 
 There will be two available modes, each using the core interpreter: (1) a complete pre-configured machine with file parsing features, and (2) a more configurable interactive execution environment that stores console input.
 

@@ -12,65 +12,119 @@ unsigned long hash(unsigned char *str) {
 
 void decode_instruction(Machine *dest, char **tokens) {
 	switch (hash(tokens[0])) {
-		// PUSH
-		case 6384411237:
+		case 6384517835: { // STOP
+			shutdown_machine(dest);
+			printf("Machine shutdown successful; exiting...\n");
+			exit(1);
+		} case 6384411237: { // PUSH
 			if (tokens[1] == NULL) {	
-				fprintf(stderr, "[!!!] decode: malformed PUSH\n");
+				fprintf(stderr, "[!!!] decode: { malformed PUSH\n");
 				break;
 			}
 			stack_push(dest, (uint32_t) atoi(tokens[1]));
 			break;
-		// PRINT
-		case 210685452402:
+		} case 210685452402: { // PRINT
 			if (tokens[1] != NULL) {
-                                fprintf(stderr, "[!!!] decode: malformed PRINT\n");
-                                break;
+                fprintf(stderr, "[!!!] decode: { malformed PRINT\n");
+                break;
 			}
 			stack_print(dest);
 			break;
-		
-		// ADD
-		case 193450094:
+		} case 193450094: { // ADD
 			stack_push(dest, stack_pop(dest) + stack_pop(dest));
 			break;
-		// MUL
-                case 193463731:
-                        stack_push(dest, stack_pop(dest) * stack_pop(dest));
-                        break;
-		// SUB
-                case 193470255:
-                        stack_push(dest, stack_pop(dest) - stack_pop(dest));
-                        break;
-		// DIV
-                case 193453544:
-                        stack_push(dest, stack_pop(dest) / stack_pop(dest));
-                        break;
-		// SDIV 
-                case 6384500219:
-                        stack_push(dest, (int32_t) stack_pop(dest) % (int32_t) stack_pop(dest));    
-                        break;
-		// MOD 
-		case 193463525:
+		} case 193463731: { // MUL
+            stack_push(dest, stack_pop(dest) * stack_pop(dest));
+            break;
+        } case 193470255: { // SUB
+            stack_push(dest, stack_pop(dest) - stack_pop(dest));
+            break;
+        } case 193453544: { // DIV
+            stack_push(dest, stack_pop(dest) / stack_pop(dest));
+            break;
+        } case 6384500219: { // SDIV
+            stack_push(dest, (int32_t) stack_pop(dest) / (int32_t) stack_pop(dest));    
+            break;
+		} case 193463525: { // MOD
 			stack_push(dest, stack_pop(dest) % stack_pop(dest));
-			break;
-		// SMOD 
-                case 6384510200:
-                        stack_push(dest, (int32_t) stack_pop(dest) % (int32_t) stack_pop(dest));    
-                        break;
-		// ADDMOD
-                case 6952016114606:	
-                        stack_push(dest, (stack_pop(dest) + stack_pop(dest)) % (uint32_t) atoi(tokens[1]));                       
-                        break;		
-		// MULMOD
-                case 6952506187475:
-                        stack_push(dest, (stack_pop(dest) * stack_pop(dest)) % (uint32_t) atoi(tokens[2]));      
-                        break;
-		// EXP
-                case 193455122:
-                        stack_push(dest, pow(stack_pop(dest), stack_pop(dest)));                             
-                        break;
-		default:
+			break;	
+        } case 6384510200: { // SMOD
+            stack_push(dest, (int32_t) stack_pop(dest) % (int32_t) stack_pop(dest));    
+            break;
+        } case 6952016114606: {	// ADDMOD
+            stack_push(dest, (stack_pop(dest) + stack_pop(dest)) % (uint32_t) atoi(tokens[1]));                       
+            break;		
+        } case 6952506187475: { // MULMOD
+            stack_push(dest, (stack_pop(dest) * stack_pop(dest)) % (uint32_t) atoi(tokens[2]));      
+            break;
+        } case 193455122: { // POW
+            stack_push(dest, pow(stack_pop(dest), stack_pop(dest)));                             
+            break;
+        } case 5862501: { // LT
+			uint32_t top = stack_pop(dest);
+			uint32_t bot = stack_pop(dest);
+			if (top < bot)
+				stack_push(dest, (uint32_t) 1);
+			else 
+				stack_push(dest, (uint32_t) 0);
+            break;
+        } case 5862336: { // GT
+			uint32_t top = stack_pop(dest);
+            uint32_t bot = stack_pop(dest);
+            if (top > bot)
+                    stack_push(dest, (uint32_t) 1);
+            else 
+                    stack_push(dest, (uint32_t) 0);
+            break;
+        } case 193469976: { // SLT
+			uint32_t top = stack_pop(dest);
+            uint32_t bot = stack_pop(dest);
+            if ((int32_t) top < (int32_t) bot)
+                    stack_push(dest, (uint32_t) 1);
+            else 
+                    stack_push(dest, (uint32_t) 0);
+            break;
+        } case 193469811: { // SGT
+			uint32_t top = stack_pop(dest);
+            uint32_t bot = stack_pop(dest);
+            if ((int32_t) top > (int32_t) bot)
+                    stack_push(dest, (uint32_t) 1);
+            else
+                    stack_push(dest, (uint32_t) 0);
+            break;	
+		} case 5862267: { // EQ
+			uint32_t top = stack_pop(dest);
+            uint32_t bot = stack_pop(dest);
+            if (top == bot)
+                    stack_push(dest, (uint32_t) 1);
+            else
+                    stack_push(dest, (uint32_t) 0);
+            break;	
+		} case 6952347768577: { // ISZERO
+			uint32_t top = stack_pop(dest);
+            if (top == 0)
+                    stack_push(dest, (uint32_t) 1);
+            else
+                    stack_push(dest, (uint32_t) 0);
+            break;	
+		} case 193450424: { // AND
+            stack_push(dest, stack_pop(dest) & stack_pop(dest));
+            break;	
+		} case 5862598: { // OR
+			stack_push(dest, stack_pop(dest) | stack_pop(dest));
+            break;	
+		} case 193475518: { // XOR
+			stack_push(dest, stack_pop(dest) ^ stack_pop(dest));
+            break;	
+		} case 193464630: { // NOT
+			stack_push(dest, ~stack_pop(dest));
+            break;	
+		} case 6383912505: { // BYTE <UNDER CONSTRUCTION>
+			printf("BYTE opcode under construction...\n");
+            break;	
+		} default: {
 			printf("Aww...\n");
 			break;
+		}
 	}
 }

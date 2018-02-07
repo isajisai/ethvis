@@ -22,12 +22,10 @@ int main(void) {
 		TOKS = split_line(BUFFER);
 		if (TOKS[0] == NULL)	
 			continue;
-		if (strncmp(TOKS[0], "STOP", 4) == 0)
-			break;
 		decode_instruction(MAIN_VM, TOKS);
 	}
 	shutdown_machine(MAIN_VM);
-	printf("Machine shutdown successful\n");	
+	printf("Machine shut down successfully. Exiting...\n");	
 }
 
 char *read_line(void) {

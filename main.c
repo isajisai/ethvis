@@ -1,3 +1,4 @@
+#include "evm.h"
 #include "opcodes.h"
 
 #define BUF_SIZE 1000
@@ -20,9 +21,10 @@ int main(void) {
 		printf(">>>>> ");
 		BUFFER = read_line();
 		TOKS = split_line(BUFFER);
-		if (TOKS[0] == NULL)	
-			continue;
-		decode_instruction(MAIN_VM, TOKS);
+		if (TOKS[0] != NULL)	
+			decode_instruction(MAIN_VM, TOKS);
+		if (TOKS[0] == EOF)
+			break;
 	}
 	shutdown_machine(MAIN_VM);
 	printf("Machine shut down successfully. Exiting...\n");	
@@ -38,7 +40,7 @@ char *read_line(void) {
 char **split_line(char *line) {
 	int bufsize = BUF_SIZE;
 	int position = 0;
-	char **tokens = malloc(bufsize * sizeof(char *));
+	char **tokens = malloc(4 * sizeof(char *));
 	char *token;
 
 	token = strtok(line, DELIMS);

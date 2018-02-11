@@ -10,7 +10,7 @@ unsigned long hash(unsigned char *str) {
 	return hash;
 }
 
-void decode_instruction(Machine *dest, char **tokens) {
+int decode_instruction(Machine *dest, char **tokens) {
 	switch (hash(tokens[0])) {
 		case 6384517835: { // STOP
 			shutdown_machine(dest);

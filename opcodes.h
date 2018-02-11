@@ -15,7 +15,8 @@ void decode_instruction(Machine *dest, char **tokens) {
 		case 6384517835: { // STOP
 			shutdown_machine(dest);
 			printf("Machine shutdown successful; exiting...\n");
-			exit(1);
+			/* exit(1); */
+			return 1;
 		} case 6384411237: { // PUSH
 			if (tokens[1] == NULL) {	
 				fprintf(stderr, "[!!!] decode: { malformed PUSH\n");
@@ -127,4 +128,6 @@ void decode_instruction(Machine *dest, char **tokens) {
 			break;
 		}
 	}
+	
+	return 0;
 }
